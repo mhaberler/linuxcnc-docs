@@ -1,0 +1,21 @@
+
+# taken from #28 http://stackoverflow.com/questions/359424/detach-subdirectory-into-separate-git-repository
+
+SRC=/home/mah/linuxcnc-docsplit
+WORK=/tmp/linuxcnc-work
+TARGET=/tmp/linuxcnc-docs
+
+git clone --no-hardlinks $SRC $WORK
+
+cd $WORK
+git filter-branch --subdirectory-filter ./docs  --prune-empty --tag-name-filter cat -- --all
+git clone file://$WORK/ $TARGET
+cd $TARGET
+git reflog expire --expire=now --all
+git repack -ad
+git gc --prune=now
+
+# mass rename to .asciidoc so the github wiki does the right thing
+#find . -name '*.txt'|rename 's/\.txt$/.asciidoc/'
+
+# git add -A, commit and push
