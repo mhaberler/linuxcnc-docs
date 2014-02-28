@@ -222,8 +222,10 @@ identity=1, serial=2, parallel=3, custom=4 .
 axis limit masks. minHardLimit=1,
 maxHardLimit=2, minSoftLimit=4, maxSoftLimit=8.
 
-*linear_units*:: '(returns string)' -
-reflects [TRAJ]LINEAR_UNITS ini value.
+*linear_units*:: '(returns float)' -
+reflects [TRAJ] LINEAR_UNITS ini value.
+will return 1.0 for metric and
+0.0393700787402 (1/25.4) for imperial 
 
 *lube*:: '(returns integer)' -
 'lube on' flag.
