@@ -97,7 +97,7 @@ reflects [TRAJ] ANGULAR_UNITS ini value.
 *aout*:: '(returns tuple of floats)' -
 current value of the analog output pins.
 
-*axes*:: '(returns string)' -
+*axes*:: '(returns int)' -
 reflects [TRAJ] AXES ini value.
 
 *axis*:: '(returns tuple of dicts)' -
@@ -535,7 +535,11 @@ c.tool_offset(toolno, z_offset,  x_offset, diameter, frontangle, backangle, orie
 	send EMC_TASK_ABORT message.
 
 `auto(int[, int])`:: 
-	run, step, pause or resume a program.
+	run, step, pause or resume a program. +
+	Syntax: +
+	auto(command, linenumber)
+	command = AUTO_RUN ; AUTO_PAUSE ; AUTO_STEP ; AUTO_RESUME
+	linenumber = only needed for AUTO_RUN if not omitted run from line 0 
 
 `brake(int)`::
 	engage or release spindle brake.
@@ -547,10 +551,21 @@ c.tool_offset(toolno, z_offset,  x_offset, diameter, frontangle, backangle, orie
 	set the feedrate.
 
 `flood(int)`::
-	turn on/off flooding.
+	turn on/off flooding. +
+	Syntax: +
+	flood(command) +
+	flood(linuxcnc.FLOOD_ON) +
+	flood(linuxcnc.FLOOD_OFF) +
+	Constants: +
+	FLOOD_ON (1) +
+	FLOOD_OFF (0)
 
 `home(int)`::
-	home a given axis.
+	home a given axis. +
+	Syntax:
+	home(axis)
+        axis : 1 = X ; 1 = Y ; 3 = Z ... +
+	      -1 = home all
 
 `jog(int, int, [, int[,int]])`::
 	Syntax: +
@@ -613,10 +628,18 @@ c.tool_offset(toolno, z_offset,  x_offset, diameter, frontangle, backangle, orie
 	set feed override on/off
 
 `set_max_limit(int, float)`::
-        set max position limit for a given axis
+        set max position limit for a given axis +
+        Syntax: +
+        set_max_limit(axis, value) +
+        axis ; where 0 = x, 1 = y , 2 = z ... +
+        value ; The value to set in machine units
 
 `set_min_limit()`::
-        set min position limit for a given axis
+        set min position limit for a given axis +
+        Syntax: +
+        set_max_limit(axis, value) +
+        axis ; where 0 = x, 1 = y , 2 = z ... +
+        value ; The value to set in machine units
 
 `set_optional_stop(int)`::
 	set optional stop on/off
@@ -624,16 +647,23 @@ c.tool_offset(toolno, z_offset,  x_offset, diameter, frontangle, backangle, orie
 `set_spindle_override(int)`::
 	set spindle override flag
 
-`spindle(int)`::
-	set spindle direction. Argument one of SPINDLE_FORWARD,
-	SPINDLE_REVERSE, SPINDLE_OFF, SPINDLE_INCREASE,
-	SPINDLE_DECREASE, or SPINDLE_CONSTANT.
+`spindle(int, float)`::
+	set spindle direction. +
+	Syntax: +
+	spindle(direction, rpm = 0) +
+	direction =  SPINDLE_FORWARD, SPINDLE_REVERSE, SPINDLE_OFF, +
+	             SPINDLE_INCREASE, SPINDLE_DECREASE, or SPINDLE_CONSTANT. +
+	rpm = the velocity to set, for SPINDLE_FORWARD, SPINDLE_REVERSE +
+	      all other cases it should not be given
 
 `spindleoverride(float)`::
-	set spindle override factor
+	set spindle override factor 1.0 = 100 % ; 0.46 = 46 % 
 
 `state(int)`::
-	set the machine state. Machine state should be STATE_ESTOP, STATE_ESTOP_RESET, STATE_ON, or STATE_OFF
+	set the machine state. +
+	Syntax: +
+	state(state) +
+	state = STATE_ESTOP, STATE_ESTOP_RESET, STATE_ON, or STATE_OFF
 
 `teleop_enable(int)`::
 	enable/disable teleop mode.
@@ -645,11 +675,17 @@ c.tool_offset(toolno, z_offset,  x_offset, diameter, frontangle, backangle, orie
         set the tool offset. See usage example above.
 
 `traj_mode(int)`::
-	set trajectory mode. Mode is one of MODE_FREE, MODE_COORD, or
-	MODE_TELEOP.
+	set trajectory mode. +
+	Syntax: +
+	traj_mode(mode) +
+	mode = MODE_FREE, MODE_COORD, MODE_TELEOP.
 
 `unhome(int)`::
-	unhome a given axis.
+	unhome a given axis. +
+	Syntax:
+	unhome(axis)
+        axis : 1 = X ; 1 = Y ; 3 = Z ... +
+	      -1 = unhome all
 
 `wait_complete([float])`::
 	wait for completion of the last command sent. If timeout in
