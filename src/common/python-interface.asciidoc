@@ -187,8 +187,10 @@ pose of the current g92 offset.
 *gcodes*:: '(returns tuple of 16 integers)' -
 currently active G-codes.
 
-*homed*:: '(returns integer)' -
-flag. 1 if homed.
+*homed*:: '(returns tupple of integer)' +
+(1, 1, 0, 0, 0, 1, 0, 0, 0)
+flag. 1 if homed, +
+so the example mean X,Y and C homed all others not
 
 *id*:: '(returns integer)' -
 currently executing motion id.
